@@ -1,0 +1,87 @@
+.header{
+    position: fixed;
+    z-index: 9;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #0c283e;
+}
+
+.header-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.left{
+    box-sizing: border-box;
+    margin-left: 120px;
+}
+
+.right-handler{
+    margin-right: 130px;
+}
+
+.dropdown-menu {
+    box-sizing: border-box;
+    display: inline-block;
+    color: #fff;
+    font-size: 14px;
+    margin-left: 14px;
+    padding-top: 5px;
+    position: relative;
+    cursor: pointer; /* Indicate clickable element */
+}
+
+.user-bg {
+    width: 20px;
+    height: 20px;
+    line-height: 28px;
+    text-align: center;
+    padding-left: 10px;
+    display: inline-block;
+    border-radius: 50%; /* Optional: Make it circular if it represents a user icon */
+    color: #fff; /* Ensures text/icon is visible */
+}
+
+.dropdown-menu .dropdown-content {
+    margin: 0;
+    position: absolute;
+    top: 150%; /* Position below the dropdown-menu */
+    left: 0;
+    background: #FFFFFF;
+    color: #96999C;
+    border-radius: 8px;
+    border: 1px solid #E4E7ED;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    min-width: 100%;
+    z-index: 2040;
+    padding: 10px 0; /* Adjust padding */
+    visibility: hidden; /* Initially hidden */
+    opacity: 0; /* Fully transparent */
+    transform: translateY(-10px); /* Start slightly above */
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+}
+
+.dropdown-menu:hover .dropdown-content,
+.dropdown-content:hover {
+    visibility: visible;
+    opacity: 1; /* Fully visible */
+    transform: translateY(0); /* Slide into place */
+}
+
+.dropdown-item {
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #96999C;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #E8F5FF; /* Highlight item on hover */
+    color: #46AFFE;
+}
