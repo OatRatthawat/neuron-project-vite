@@ -14,39 +14,41 @@ const http = axios.create({
     },
 });
 
-export const axiosCancelTokens = [];
 
-http.interceptors.request.use((config) => {
-    const token = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`; 
-    }
+// export const axiosCancelTokens = [];
 
-    // Add Axios CancleToken to the config
-    const source = axios.CancelToken.source();
-    config.cancelToken = source.token;
-    axiosCancelTokens.push(source.cancel);
+// axios.interceptors.request.use(
+//   (config) => {
+//     const token = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
+//     if (token) {
+//       config.headers.Authorization = `Bearer ${token}`;
+//     }
+
+//     // Add Axios CancleToken to the config
+//     const source = axios.CancelToken.source();
+//     config.cancelToken = source.token;
+//     axiosCancelTokens.push(source.cancel);
     
-    return config;
-});
+//     return config;
+// });
 
-http.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (axios.isCancel(error)) {
-      console.log('Request canceled:', error.message);
-    } else {
-      console.error('API Error:', error.response?.data || error.message);
-    }
-    return Promise.reject(error);
-  }
-);
+// axios.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//     if (axios.isCancel(error)) {
+//       console.log('Request canceled:', error.message);
+//     } else {
+//       console.error('API Error:', error.response?.data || error.message);
+//     }
+//     return Promise.reject(error);
+//   }
+// );
 
-// Function to cancel all requests
-export const cancelAllRequests = () => {
-  axiosCancelTokens.forEach((cancel) => cancel && cancel());
-  axiosCancelTokens.length = 0;
-};
+// // Function to cancel all requests
+// export const cancelAllRequests = () => {
+//   axiosCancelTokens.forEach((cancel) => cancel && cancel());
+//   axiosCancelTokens.length = 0;
+// };
 
 
 export default http;

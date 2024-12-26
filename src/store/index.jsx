@@ -4,6 +4,7 @@ import { createSlice, configureStore } from "@reduxjs/toolkit";
 const initialState = {
     token: get_token() ?? '',
     axiosPromiseCancel: [],
+    isSubAppLoading: false,
 }
 
 const appSlice = createSlice({
@@ -22,6 +23,10 @@ const appSlice = createSlice({
 
         SET_AXIOS_PROMISE_CANCEL(state, action){
             state.axiosPromiseCancel = action.payload;
+        },
+
+        SET_SUB_APP_LOADING(state, action){
+            state.isSubAppLoading = action.payload;
         }
     }
 })
@@ -29,7 +34,8 @@ const appSlice = createSlice({
 export const { SET_TOKEN,
                LOGOUT, 
                ADD_AXIOS_PROMISE_CANCEL, 
-               SET_AXIOS_PROMISE_CANCEL 
+               SET_AXIOS_PROMISE_CANCEL,
+               SET_SUB_APP_LOADING, 
             } = appSlice.actions;
 
 const store = configureStore({

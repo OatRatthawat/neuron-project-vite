@@ -1,5 +1,7 @@
 import Header from '../components/header/Header.jsx';
 import SideNav from '../components/sideNav/SideNav.jsx';
+import "./Home.css";
+import { Outlet } from 'react-router';
 
 function Home(){
     return(
@@ -7,8 +9,13 @@ function Home(){
             <div>
                 <Header />
             </div>
-            <div>
-                <SideNav />
+            <div className="el-container">
+                <aside>
+                    <SideNav />
+                </aside>
+                <main>
+                    <Outlet />
+                </main>
             </div>
         </>
     )

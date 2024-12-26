@@ -46,6 +46,10 @@ function Header(){
         }
     }
 
+    const handleAbout = () => {
+        navigate("about");
+    }
+
     return(
         <header className="header" style={{height: "60px"}}>
             <div className="header-container">
@@ -54,12 +58,12 @@ function Header(){
                 </div>
                 <div className="right-handler">
                     <DropDown title="System Information" icon="fa-solid fa-chevron-down">
-                        <div className="dropdown-item">About</div>
-                        <div className="dropdown-item">Debug files</div>
+                        <div className="dropdown-item" onClick={handleAbout}>About</div>
                     </DropDown>
                     <DropDown title="English" icon="fa-solid fa-chevron-down">
                         <div className="dropdown-item">中文</div>
                         <div className="dropdown-item">English</div>
+                        <div className="dropdown-item">ไทย</div>
                     </DropDown>
                     <DropDown title={
                         <>

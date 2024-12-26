@@ -1,5 +1,6 @@
 import Login from "../views/Login.jsx";
 import Home from "../views/Home.jsx";
+import About from "../views/about/About.jsx";
 import { Routes, Route } from 'react-router-dom';
 import ProtectRoute from "./index.js";
 
@@ -18,23 +19,58 @@ const routeData = [
         path: "/",
         title: "Home",
         // element: <Navigate to="/configuration/south-driver" replace />,
-        element: <Home />
+        element: <Home />,
+        children: [
+            {
+                path: "about",
+                title: "AboutPage",
+                element: <About />
+            }
+        ]
     },
+
 ]
 
+// const Router = () => {
+//     const pageRoutes = routeData.map(({title, path, element}) => {
+//         return <Route key={title} 
+//                       path={`${path}`} 
+//                       element={
+//                         <ProtectRoute>
+//                             {element}
+//                         </ProtectRoute>
+//                         } />
+
+//     })
+
+//     return <Routes>{pageRoutes}</Routes>
+// }
+
 const Router = () => {
-    const pageRoutes = routeData.map(({title, path, element}) => {
-        return <Route key={title} 
-                      path={`${path}`} 
-                      element={
+    return (
+        <Routes>
+            {routeData.map(({ title, path, element, children }) => (
+                <Route
+                    key={title}
+                    path={`${path}`}
+                    element={
                         <ProtectRoute>
                             {element}
                         </ProtectRoute>
-                        } />
-
-    })
-
-    return <Routes>{pageRoutes}</Routes>
+                    }
+                >
+                    {children?.map(({ path: childPath, element: childElement}) => (
+                            <Route 
+                                key={childPath}
+                                path={childPath}
+                                element={childElement}                 
+                            />
+                        ))
+                    }
+                </Route>
+            ))}
+        </Routes>
+    )
 }
 
 export default Router;
