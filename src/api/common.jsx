@@ -1,4 +1,4 @@
-import http from '../utils/http.jsx';
+import { http } from '../utils/http';
 
 export const Login = (data) => {
     return http.post('/login', data)

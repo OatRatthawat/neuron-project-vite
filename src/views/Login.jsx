@@ -6,6 +6,7 @@ import logo from '../assets/images/logo.png';
 import { Login as requestLogin } from "../api/common.jsx";
 import { SET_TOKEN } from '../store/index.jsx';
 import { useDispatch } from 'react-redux';
+// import { initializeInterceptor } from '../utils/http';
 
 function Login(){
     let navigate = useNavigate();
@@ -57,7 +58,17 @@ function Login(){
           const response = await requestLogin({ name: userName, pass: password });
       
           // Assuming the token is in response.data.token
-          dispatch(SET_TOKEN(response.data.token));
+          const token = response.data.token;
+
+          dispatch(SET_TOKEN(token));
+          
+          // initializeInterceptor();
+
+          // Test request
+
+          // http.get('/version')
+          //     .then((response) => console.log("Response received:", response))
+          //     .catch((error) => console.error("Request failed:", error));
           navigate("/");
         } catch (error) {
           const errorMessage =

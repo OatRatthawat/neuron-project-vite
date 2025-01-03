@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { countBaseURL } from './util.jsx';
 import { API_TIMEOUT } from '../config/index.jsx';
-import { LOCAL_STORAGE_TOKEN_KEY } from './user.jsx';
+import store, { LOGOUT } from '../store/index.jsx';
 
 const baseURL = countBaseURL();
 const http = axios.create({
@@ -51,4 +51,36 @@ const http = axios.create({
 // };
 
 
-export default http;
+const initializeInterceptor = (navigate) => {
+    // Ensure the interceptor is only initialized once
+    if (http.interceptors.request.handlers.length > 0) return;
+    // console.log("initializeInterceptor called"); // Log when this function is invoked
+    http.interceptors.request.use(
+      (config) => {
+        const token = store.getState().app.token; // Fetch token from redux 
+        // console.log("Token in delayed interceptor:", token); // Log the token
+  
+        if (token) {
+          // Add the Authorization header if the token exits
+          config.headers.Authorization = `Bearer ${token}`;
+        //   console.log("Authorization header added:", config.headers.Authorization);
+        }
+  
+        return config; // Return the modified config object
+      },
+      (error) => Promise.reject(error)
+    );
+
+    http.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if(error.response?.status === 403){
+          console.log("403 Forbidden detected. Loggin out.");
+          store.dispatch(LOGOUT());
+          navigate('/login');
+        }
+      }
+    )
+  };
+  
+export { http, initializeInterceptor };

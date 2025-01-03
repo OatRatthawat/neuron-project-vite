@@ -5,7 +5,8 @@ export const LOCAL_STORAGE_NODE_GROUP = 'nodeGroupData';
 // Token management
 export const get_token = () => {
   try{
-    return window.localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
+    const token = window.localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
+    return token;
   }
   catch (error){
     console.error("Error getting token", error);
@@ -41,7 +42,7 @@ export const clearLocalStorage = () => {
 }
 
 // Breadcrumb management
-export const setBreadcrumbFullPaths = (breadcrumbs) => {
+/*export const setBreadcrumbFullPaths = (breadcrumbs) => {
   try{
     window.localStorage.setItem(LOCAL_STORAGE_BREADCRUMB, breadcrumbs)
   }
@@ -59,9 +60,9 @@ export const getBreadcrumbFullPaths = () => {
       return '';
     }
 }
-
+*/
 // Node Group management
-export const setNodeGroupData = (data)=> {
+/*export const setNodeGroupData = (data)=> {
   try{
     window.localStorage.setItem(LOCAL_STORAGE_NODE_GROUP, JSON.stringify(data))
   }
@@ -69,7 +70,8 @@ export const setNodeGroupData = (data)=> {
     console.error("Error setting node group data", error);
   }
 }
-
+*/
+/*
   export const getNodeGroupData = () => {
     try{
       const res =
@@ -81,3 +83,4 @@ export const setNodeGroupData = (data)=> {
       return { node: '', groupName: ''};
     }
 }
+*/

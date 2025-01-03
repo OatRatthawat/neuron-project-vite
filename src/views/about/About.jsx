@@ -1,37 +1,74 @@
 import "./About.css"
-import { useState } from 'react';
-import { queryNetwork } from "../../api/admin.jsx";
+import { useEffect, useState } from 'react';
+import { queryVersion } from "../../api/admin.jsx";
+import { NodeCatogery } from '../../constants/nodeCategory.jsx';
+import { getStatisticByType } from "../../api/statistics.jsx";
 
 function About(){
-    // const [versionData, setVersionData] = useState({
-    //     version: "",
-    //     build_date: ""
-    // });
+    const [versionData, setVersionData] = useState('');
+    const [generalStatistics, setGeneralStatistics] = useState({
+        systemRunningTime: '',
+        systemStatus: '',
+        memUsedBytes: '',
+        memTotalBytes: '',
+        memPercent: 0,
+        startupTimeMatchReg: /(uptime_seconds=?)(\s*\d*)(?=\n)/g,
+        // debugFilesMatchReg: /(core_dumped=?)(\s*\d*)(?=\n)/g,
+    })
+    const [error, setError] = useState(null);
 
-    // const [netWorkInterface, setNetworkInterface] = useState([]);
+    useEffect(() => {
+        const getStatistic = async () => {
+            try{
+                const debugFilesMatchReg = /(core_dumped=?)(\s*\d*)(?=\n)/g;
 
-    // const [isLoading, setIsLoading] = useState(false);
+                const res = await getStatisticByType(NodeCatogery.GLOBAL)
 
-    // const init = () => {
-    //     try{
-    //         Promise.allSettled([queryVersion(), queryNetwork()])
-    //             .then = (values) => {
-    //                 const versionInfo = values[0]?.value || { version: '', build_date: '' };
-    //                 const networks = values[1]?.value || [];
+                const { data } = res;
 
-    //                 setVersionData(versionInfo);
-    //                 setNetworkInterface(networks);
+                const startupTime = data.match(generalStatistics.startupTimeMatchReg);
+                const isDebugFiles = data.match(debugFilesMatchReg);
 
-    //             }
-    //     }
-    //     catch (error){
-    //         console.log(error);
-    //     }
+                setGeneralStatistics((prevState) => ({
+                    ...prevState,
+                    systemRunningTime: startupTime ? startupTime[0].split(' ')[1] : '',
+                    systemStatus: isDebugFiles ? isDebugFiles[0]. split(' ')[1] : '',
+                }))
+            }
+            catch (error){
+                setError(error);
+            }
+        }
+        
+        getStatistic();
+    }, []);
+
+    useEffect(() => {
+        const getVersionInfo = async () => {
+            try {
+                const data = await queryVersion();
+                setVersionData(data)
+            }
+            catch (error) {
+                setError(error.message);
+            }
+        }
+
+        getVersionInfo();
+    }, []);
+
+    // const systemRunningTime = () => {
+    //     return
     // }
 
-    // init();
+    console.log(generalStatistics);
 
+    const systemStatusText = () => {
+        return generalStatistics.systemStatus === '0' ? 'Normal' : 'Exceptions'
+    }
 
+    if (error) return <div>Error: {error}</div>
+    if (!versionData) return <div></div>
     return(
         <div className="about">
             <div className="about-card" style={{width: `220px`}}>
@@ -43,13 +80,13 @@ function About(){
                                 <tr>
                                     <td>
                                         <span className="card-description-label">Version</span>
-                                        <span className="card-description-content"></span>
+                                        <span className="card-description-content">{versionData.version}</span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <span className="card-description-label">System Status</span>
-                                        <span className="card-description-content"></span>
+                                        <span className="card-description-content">{systemStatusText()}</span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -67,7 +104,7 @@ function About(){
                                 <tr>
                                     <td>
                                         <span className="card-description-label">Built date</span>
-                                        <span className="card-description-content"></span>
+                                        <span className="card-description-content">{versionData.build_date}</span>
                                     </td>
                                 </tr>
                                 <tr>
